@@ -8,8 +8,8 @@ import Sizes from '../Utils/Sizes';
 import Camera from '../Camera/Camera';
 import EventEmitter from '../Utils/EventEmitter';
 
-const SCREEN_SIZE = { w: 1280, h: 1024 };
-const IFRAME_PADDING = 32;
+const SCREEN_SIZE = { w: 1440, h: 900 };
+const IFRAME_PADDING = 24;
 const IFRAME_SIZE = {
     w: SCREEN_SIZE.w - IFRAME_PADDING,
     h: SCREEN_SIZE.h - IFRAME_PADDING,
@@ -43,13 +43,12 @@ export default class MonitorScreen extends EventEmitter {
         this.resources = this.application.resources;
         this.screenSize = new THREE.Vector2(SCREEN_SIZE.w, SCREEN_SIZE.h);
         this.camera = this.application.camera;
-        this.position = new THREE.Vector3(0, 950, 255);
+        this.position = new THREE.Vector3(0, 750, 200);
         this.rotation = new THREE.Euler(-3 * THREE.MathUtils.DEG2RAD, 0, 0);
         this.videoTextures = {};
         this.mouseClickInProgress = false;
         this.shouldLeaveMonitor = false;
 
-        // Create screen
         this.initializeScreenEvents();
         this.createIframe();
         const maxOffset = this.createTextureLayers();
@@ -524,3 +523,5 @@ export default class MonitorScreen extends EventEmitter {
         }
     }
 }
+
+export default MonitorScreen
