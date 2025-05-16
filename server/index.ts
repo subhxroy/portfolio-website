@@ -9,16 +9,13 @@ const compression = require('compression');
 const app = express();
 const port = 8080;
 
+// Middleware
 app.use(cors());
 app.use(compression());
-
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-
-// parse application/json
 app.use(bodyParser.json());
 
-// API routes MUST be defined before static file middleware
+// API routes
 app.post('/api/send-email', (req, res) => {
     const { name, company, email, message } = req.body;
 
@@ -58,7 +55,7 @@ app.post('/api/send-email', (req, res) => {
         });
 });
 
-// Serve static files from the public directory
+// Static file serving - moved all static middleware after API routes
 app.use('/assets', express.static(path.resolve(__dirname, '../public/assets')));
 app.use('/static', express.static(path.resolve(__dirname, '../public/static')));
 app.use(express.static(path.resolve(__dirname, '../public')));
