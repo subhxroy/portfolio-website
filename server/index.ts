@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-// API routes must be defined before the static file middleware
+// API routes MUST be defined before static file middleware
 app.post('/api/send-email', (req, res) => {
     const { name, company, email, message } = req.body;
 
@@ -58,15 +58,16 @@ app.post('/api/send-email', (req, res) => {
         });
 });
 
-// Serve static files after API routes
+// Serve static files from the public directory
+app.use('/assets', express.static(path.resolve(__dirname, '../public/assets')));
+app.use('/static', express.static(path.resolve(__dirname, '../public/static')));
 app.use(express.static(path.resolve(__dirname, '../public')));
 
-// Catch-all route for serving the React app
+// Catch-all route must be last
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 });
 
-// listen to app on port 8080
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
