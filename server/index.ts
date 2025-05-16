@@ -12,16 +12,13 @@ const port = 8080;
 app.use(cors());
 app.use(compression());
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../public')));
-
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(bodyParser.json());
 
-// Handle GET requests to /api route
+// API routes must be defined before the static file middleware
 app.post('/api/send-email', (req, res) => {
     const { name, company, email, message } = req.body;
 
@@ -52,13 +49,21 @@ app.post('/api/send-email', (req, res) => {
                 })
                 .catch((e) => {
                     console.error(e);
-                    res.status(500).send(e);
+                    res.status(500).json({ error: e.message });
                 });
         })
         .catch((e) => {
             console.error(e);
-            res.status(500).send(e);
+            res.status(500).json({ error: e.message });
         });
+});
+
+// Serve static files after API routes
+app.use(express.static(path.resolve(__dirname, '../public')));
+
+// Catch-all route for serving the React app
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../public', 'index.html'));
 });
 
 // listen to app on port 8080
