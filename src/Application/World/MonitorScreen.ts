@@ -523,5 +523,3 @@ export default class MonitorScreen extends EventEmitter {
         }
     }
 }
-
-export default MonitorScreen
